@@ -1,0 +1,12 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+col_names_percentils = ["date", "p0", "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "time"]
+df = pd.read_csv('20200719/bigpercentils.csv', names = col_names_percentils)
+df['full_time'] = pd.to_datetime(df['date'] + "_" + df['time'], format='%Y-%m-%d_%H:%M:%S.%f')
+df['regular'] = 100 - df['p0'] - df['p9']
+print(df.head())
+
+cols_plot = ['p0', 'p9', 'regular']
+plt.plot(df['full_time'], df[cols_plot])
+plt.show()
