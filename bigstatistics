@@ -1,0 +1,26 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+col_names_percentils = ["occupacy", "date", "entropy", "entropyNormalized", "time"]
+
+def getStatistics(folder):
+    df = pd.read_csv(folder + '/bigstatistics.csv', names = col_names_percentils)
+    df['time'] = df['time'].str[:6] + "00"
+    df['full_date_time'] = pd.to_datetime(df['date'] + "_" + df['time'], format='%Y-%m-%d_%H:%M:%S')
+    df['time'] = pd.to_datetime(df['time'], format='%H:%M:%S')
+    print(df.head())
+    return df
+
+df1 = getStatistics('2020-05-26')
+df2 = getStatistics('2020-05-27')
+df3 = getStatistics('2020-05-28')
+cols_plot = ['occupacy', 'entropyNormalized']
+plt.plot(df1['time'], df1['occupacy'])
+plt.plot(df2['time'], df2['occupacy'])
+plt.plot(df3['time'], df3['occupacy'])
+plt.show()
+
+plt.plot(df1['time'], df1['entropyNormalized'])
+plt.plot(df2['time'], df2['entropyNormalized'])
+plt.plot(df3['time'], df3['entropyNormalized'])
+plt.show()
