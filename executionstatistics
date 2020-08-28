@@ -1,0 +1,29 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+def readFile():
+    df = pd.read_csv('grafana_data_export.csv', sep=';')
+    return df
+
+def filterByName(df, city):
+    filtered = df[df['name'] == city]
+    return filtered
+
+def printStatistics(filtered, city):
+    average = filtered['executioninmiliseconds'].mean()
+    countInTime = len(filtered[filtered['executioninmiliseconds'] < average * 1.4].index)
+    countOutTime = len(filtered[filtered['executioninmiliseconds'] >= average * 1.4].index)
+    total = countInTime + countOutTime
+
+    print(city + " - average: " + str(average) + " - countInTime: " + str(countInTime) + " - countOutTime: " + str(countOutTime) + " - total: " + str(total))
+
+
+df = readFile()
+filtered = filterByName(df, 'sevilla')
+
+sequence = ['sevilla', 'valencia', 'santander', 'dublin', 'toulouse', 'marseille', 'ljubljana', 'bicing', 'zaragoza']
+
+for city in sequence:
+    filtered = filterByName(df, city)
+    printStatistics(filtered, city)
+
